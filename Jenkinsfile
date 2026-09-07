@@ -55,19 +55,17 @@ pipeline {
                 // The token never appears in the console - Jenkins masks it, and it is
                 // passed on the command line rather than committed to the properties file.
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
-                    // Dollar-slashy string: Groovy leaves backslashes alone, so Windows
-                    // paths survive without escaping.
-                    bat $/
+                    bat '''
                         @echo off
-                        if not exist "%SCANNER_DIR%\bin\sonar-scanner.bat" (
+                        if not exist "%SCANNER_DIR%\\bin\\sonar-scanner.bat" (
                             echo Downloading SonarScanner CLI...
                             powershell -NoProfile -Command "Invoke-WebRequest -Uri '%SCANNER_URL%' -OutFile '%SCANNER_ZIP%'"
                             echo Extracting SonarScanner CLI...
                             powershell -NoProfile -Command "Expand-Archive -Path '%SCANNER_ZIP%' -DestinationPath '.' -Force"
                         )
                         echo Running SonarCloud analysis...
-                        "%SCANNER_DIR%\bin\sonar-scanner.bat" -Dsonar.token=%SONAR_TOKEN%
-                    /$
+                        "%SCANNER_DIR%\\bin\\sonar-scanner.bat" -Dsonar.token=%SONAR_TOKEN%
+                    '''
                 }
             }
         }
