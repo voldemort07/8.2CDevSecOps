@@ -59,9 +59,9 @@ pipeline {
                         @echo off
                         if not exist "%SCANNER_DIR%\\bin\\sonar-scanner.bat" (
                             echo Downloading SonarScanner CLI...
-                            powershell -NoProfile -Command "Invoke-WebRequest -Uri '%SCANNER_URL%' -OutFile '%SCANNER_ZIP%'"
+                            curl.exe -sSL -o "%SCANNER_ZIP%" "%SCANNER_URL%"
                             echo Extracting SonarScanner CLI...
-                            powershell -NoProfile -Command "Expand-Archive -Path '%SCANNER_ZIP%' -DestinationPath '.' -Force"
+                            powershell -NoProfile -Command "$ProgressPreference='SilentlyContinue'; Expand-Archive -Path '%SCANNER_ZIP%' -DestinationPath '.' -Force"
                         )
                         echo Running SonarCloud analysis...
                         "%SCANNER_DIR%\\bin\\sonar-scanner.bat" -Dsonar.token=%SONAR_TOKEN%
