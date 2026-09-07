@@ -64,7 +64,7 @@ pipeline {
                             powershell -NoProfile -Command "$ProgressPreference='SilentlyContinue'; Expand-Archive -Path '%SCANNER_ZIP%' -DestinationPath '.' -Force"
                         )
                         echo Running SonarCloud analysis...
-                        "%SCANNER_DIR%\\bin\\sonar-scanner.bat" -Dsonar.token=%SONAR_TOKEN%
+                        "%SCANNER_DIR%\\bin\\sonar-scanner.bat" -Dsonar.token="%SONAR_TOKEN%"
                     '''
                 }
             }
